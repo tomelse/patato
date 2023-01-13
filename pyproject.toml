@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "patato"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
     "requests",
     "cython",
@@ -26,14 +26,16 @@ dependencies = [
     "dask",
     "pybind11",
     "jax[cpu]",
-    "simpa"
+    "simpa",
+    "wget",
+    "gdown"
 ]
 authors = [
   { name="Thomas Else", email="thomas.else@cruk.cam.ac.uk" },
 ]
 description = "A Python Toolkit for the analysis of photoacoustic tomography data."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: BSD License",
