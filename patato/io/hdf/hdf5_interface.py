@@ -56,7 +56,8 @@ def load_image_from_hdf5(cls, dataset, file):
     elif ax_1_meaning == "SPECTRA":
         ax_1_labels = dataset.attrs["SPECTRA"]
     elif ax_1_meaning is None:
-        ax_1_labels = None
+        # For dso2 etc.
+        ax_1_labels = np.array([dataset.name.split("/")[-3]])
     elif dataset_da.shape[1] == 1:
         ax_1_labels = np.array([dataset.name.split("/")[-3]])
     else:
@@ -97,7 +98,9 @@ class HDF5Writer(WriterInterface):
     def set_pa_data(self, raw_data):
         if type(raw_data) == PATimeSeries:
             raw_data = raw_data.da
-        self.file.create_dataset(HDF5Tags.RAW_DATA, data=raw_data, dtype=np.uint16)
+        if raw_data is None:
+            return
+        self.file.create_dataset(HDF5Tags.RAW_DATA, data=raw_data)
 
     def set_scan_name(self, scan_name: str):
         self.file.attrs[HDF5Tags.SCAN_NAME] = scan_name
@@ -259,7 +262,13 @@ class HDF5Writer(WriterInterface):
             recon_groups = [HDF5Tags.RECONSTRUCTION,
                             HDF5Tags.UNMIXED,
                             HDF5Tags.SO2,
-                            HDF5Tags.THB]
+                            HDF5Tags.THB,
+                            HDF5Tags.DELTA_SO2,
+                            HDF5Tags.DELTA_ICG,
+                            HDF5Tags.BASELINE_ICG,
+                            HDF5Tags.BASELINE_SO2,
+                            HDF5Tags.BASELINE_SO2_STANDARD_DEVIATION,
+                            HDF5Tags.BASELINE_ICG_SIGMA]
         if name is None:
             for group in recon_groups:
                 if group in self.file:

@@ -142,9 +142,8 @@ class DataSequence(ProcessingResult, ABC):
 
     def imshow(self, ax=None, roi_mask: Tuple["ROI", Iterable["ROI"]] = None,
                mask_roi=True,
-               cmap=None, scale_kwargs=None, return_scalebar_dimension=False, scalebar=True,
+               cmap=None, scale_kwargs=None, return_scalebar_dimension=False, scalebar=True, transpose=False, log=False,
                **kwargs):
-        # TODO: make roi_mask take an array
         if scale_kwargs is None:
             scale_kwargs = {}
 
@@ -187,7 +186,15 @@ class DataSequence(ProcessingResult, ABC):
         display_image = np.squeeze(display_image)
         if "origin" not in kwargs:
             kwargs["origin"] = "lower"
-        im = ax.imshow(display_image, extent=self.extent,
+        if transpose:
+            extent = self.extent[2:] + self.extent[:2]
+            display_image = display_image.T
+        else:
+            extent = self.extent
+        
+        if log:
+            display_image = np.log(display_image)
+        im = ax.imshow(display_image, extent=extent,
                        cmap=cmap, **kwargs, interpolation=interpolation)
         ax.axis("off")
         if scalebar:
@@ -329,7 +336,7 @@ class ImageSequence(DataSequence):
             if raw_data.shape[1] != len(ax_1_labels):
                 raise ValueError("Axis 1 labels must match raw data size.")
 
-        if type(field_of_view[0]) is not tuple:
+        if type(field_of_view[0]) not in [tuple, list, np.ndarray]:
             field_of_view = [(-x / 2, x / 2) if x is not None else (0, 0) for x in field_of_view]
 
         xs = [np.linspace(x, y, N) for (x, y), N in zip(field_of_view, raw_data.shape[-3:][::-1])]
