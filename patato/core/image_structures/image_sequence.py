@@ -26,10 +26,10 @@ from xarray import DataArray
 
 try:
     import jax.numpy as jnp
-except ImportError:
+except ImportError as e:
     jnp = None
 
-if jnp.DeviceArray not in xarray.core.variable.NON_NUMPY_SUPPORTED_ARRAY_TYPES:
+if jnp is not None and jnp.DeviceArray not in xarray.core.variable.NON_NUMPY_SUPPORTED_ARRAY_TYPES:
     xarray.core.variable.NON_NUMPY_SUPPORTED_ARRAY_TYPES += (jnp.DeviceArray, )
 from dask.array.core import Array as DaskArray
 
