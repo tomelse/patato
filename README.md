@@ -1,3 +1,6 @@
+# THIS REPOSITORY IS NOW MARKED AS READ-ONLY. THE REPOSITORY HAS BEEN MIGRATED TO [THIS RESPOSITORY](https://github.com/BohndiekLab/patato).
+
+
 [![Documentation Status](https://readthedocs.org/projects/patato/badge/?version=latest)](https://patato.readthedocs.io/en/latest/?badge=latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/tomelse/patato/blob/main/LICENSE.MD)
 [![PyPI version](https://badge.fury.io/py/patato.svg)](https://badge.fury.io/py/patato)
